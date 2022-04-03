@@ -48,8 +48,8 @@ class Config:
     POINTS_PER_BLOCK = 1
     POINTS_TO_WIN = 20
 
-    USE_CONTROLERS = False
-    FULLSCREEN = False
+    USE_CONTROLERS = True
+    FULLSCREEN = True
 
     #keyboard controls
     K_P1_UP = pygame.K_w

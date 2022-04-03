@@ -32,6 +32,9 @@ class Hunter(pygame.sprite.Sprite):
     of the other player and try to hit him.
     """
 
+    STATE_REVERSE = 0
+    STATE_HUNTING = 1
+
     def __init__(self, screen, target, right_to_left):
         super(Hunter, self).__init__()
 
@@ -55,6 +58,10 @@ class Hunter(pygame.sprite.Sprite):
 
         self.animation_frame_index = 0
         self.animation_frame_count = 0
+
+        self.state = Hunter.STATE_HUNTING
+        self.reverse_frame_count = 0
+        self.reverse_frame_cooldown = Config.FPS
 
         if right_to_left:
             self.velocity = self.velocity * -1
@@ -86,8 +93,21 @@ class Hunter(pygame.sprite.Sprite):
             if self.rect.y > self.target.rect.y:
                 self.rect.y -= abs(self.velocity)
 
+        if self.state == Hunter.STATE_REVERSE:
+            self.reverse_frame_count += 1
+
+            if self.reverse_frame_count >= self.reverse_frame_cooldown:
+                self.state = Hunter.STATE_HUNTING
+                self.reverse_frame_count = 0
+
     def set_position(self, x, y):
         self.rect.x = x
         self.rect.y = y
+
+    def reverse(self):
+        if self.state == Hunter.STATE_HUNTING:
+            self.state = Hunter.STATE_REVERSE
+            self.reverse_frame_count = 0
+            self.velocity = self.velocity * -1
 
     

@@ -120,6 +120,7 @@ class GameScreen:
             self.check_block_collisions()
             self.check_player_collisions()
             self.respawn_blocks()
+            self.check_hunter_collisions()
 
             self.hunter_cooldown += 1
 
@@ -202,6 +203,23 @@ class GameScreen:
                         self.player2.remove_laser(laser)
                         self.player2.score()
                         self.spawn_hunter(block.rect.x, block.rect.y, self.player1, True)
+
+    def check_hunter_collisions(self):
+        #player 1
+        for laser in self.player1.lasers:
+            for hunter in self.hunters:
+                if hunter != None:
+                    if self.does_collide(laser, hunter):
+                        hunter.reverse()
+                        self.player1.remove_laser(laser)
+
+        #player 2
+        for laser in self.player2.lasers:
+            for hunter in self.hunters:
+                if hunter != None:
+                    if self.does_collide(laser, hunter):
+                        hunter.reverse()
+                        self.player2.remove_laser(laser)
 
     def check_player_collisions(self):
         #player 1 hits player 2
